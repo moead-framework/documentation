@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'moead-framework'
+project = 'The Moead Framework'
 copyright = '2019, Geoffrey Pruvost'
 author = 'Geoffrey Pruvost'
 

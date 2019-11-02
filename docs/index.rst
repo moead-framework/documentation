@@ -8,16 +8,18 @@ Welcome to Moead-Framework's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :hidden:
 
-.. automodule:: pymap3d
-   :members:
+   install
+   documentation
+   examples
+   newpage
 
-.. automodule:: pymap3d.vincenty
-   :members:
 
-Indices and tables
-==================
+**MOEA/D** (*Multi-objective evolutionary algorithm based on decomposition*) 
+is a general-purpose algorithm framework. It decomposes a multi-objective 
+optimization problem into a number of single-objective optimization sub-problems 
+(or simple multi-objective optimization problems) and then uses a search heuristic to 
+optimize these sub-problems simultaneously and cooperatively.
 
-* :ref:`genindex`
-* :ref:`search`
+
