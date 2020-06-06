@@ -1,17 +1,9 @@
 
-Examples of the Framework
+Examples
 ===========================================
 
-Part 11
+Optimise Rmnk with MOEA/D
 --------------------------------------
-lorem ipseum
+.. literalinclude:: examples/example_rmnk_moead.py
+  :language: python
 
-
-Part 21
---------------------------------------
-lorem ipseum
-
-
-Part 31
---------------------------------------
-lorem ipseum

@@ -13,7 +13,6 @@ Welcome to Moead-Framework's documentation!
    install
    documentation
    examples
-   newpage
 
 
 **MOEA/D** (*Multi-objective evolutionary algorithm based on decomposition*) 
