@@ -36,10 +36,10 @@ Example with the problem rho MNK-Landscapes:
 
 .. code-block:: python
 
-    # rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0
-    In [1]: from problem.rmnk import Rmnk
+    In [1]: from moead_framework.problem.combinatorial.rmnk import Rmnk
 
     # the file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat
+    # rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0
     In [2]: file_rmnk = "rmnk_0_2_20_1_0.dat"  
     In [3]: rmnk = Rmnk(instance_file=file_rmnk) 
 
@@ -54,7 +54,7 @@ Example with the problem rho MNK-Landscapes:
     In [7]: f1 = rmnk.f(1, solution)
 
 In practice, it is not necessary to evaluate solutions in our algorithm because when a new solution is generated with our functions, 
-the solution is evaluated and all fitness values are accessible in solution.F
+the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in solution.F
 
 .. code-block:: python
     
@@ -65,13 +65,14 @@ the solution is evaluated and all fitness values are accessible in solution.F
 Algorithms
 --------------------------------------
 
-========================================= ========================================= ===================================================================
-Common Name                               Name in the framework                     Comments
-========================================= ========================================= ===================================================================
-Original MOEA/D                           :class:`moead.algorithm.moead`            The original algorithm
-MOEA/D with delta and nr                  :class:`moead.algorithm.moead_delta_nr`   Variant with parameters delta & nr of MOEA/D-DE
-MOEA/D-DRA                                :class:`moead.algorithm.moead_dra`        Variant with a dynamic ressource allocation
-========================================= ========================================= ===================================================================
+========================================= ================================================================== ===================================================================
+Common Name                               Name in the framework                                              Comments
+========================================= ================================================================== ===================================================================
+Original MOEA/D (combinatorial)           :class:`moead_framework.algorithm.combinatorial.moead`             The original algorithm for combinatorial optimization
+Original MOEA/D (continue/numerical)      :class:`moead_framework.algorithm.numerical.moead`                 The original algorithm for numerical optimization
+MOEA/D with delta and nr                  :class:`moead_framework.algorithm.combinatorial.moead_delta_nr`    Variant with parameters delta & nr of MOEA/D-DE
+MOEA/D-DRA                                :class:`moead_framework.algorithm.combinatorial.moead_dra`         Variant with a dynamic ressource allocation
+========================================= ================================================================== ===================================================================
 
 Each algorithm can be executed with the `run()` function. This function return all non dominated solutions found by the 
 algorithm. Example : 
@@ -95,8 +96,8 @@ Aggregation function
 ========================================= ========================================= 
 Common Name                               Name in the framework                    
 ========================================= ========================================= 
-Weighted Sum                              :class:`moead.aggregation.weighted_sum`   
-Tchebycheff                               :class:`moead.aggregation.tchebycheff`    
+Weighted Sum                              :class:`moead_framework.aggregation.weighted_sum`   
+Tchebycheff                               :class:`moead_framework.aggregation.tchebycheff`    
 ========================================= ========================================= 
 
 The aggregation function is used in MOEA/D to decompose the multi-objective problem into several mono-objective problems. 

@@ -215,10 +215,10 @@
 <cite>OneDimensionSolution.solution</cite>, the fitness is save in the array <cite>OneDimensionSolution.F</cite> if the
 parameter <cite>evaluate</cite> is set to True.</p>
 <p>Example with the problem rho MNK-Landscapes:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">problem.rmnk</span> <span class="kn">import</span> <span class="n">Rmnk</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">moead_framework.problem.combinatorial.rmnk</span> <span class="kn">import</span> <span class="n">Rmnk</span>
 
 <span class="c1"># the file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat</span>
+<span class="c1"># rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">file_rmnk</span> <span class="o">=</span> <span class="s2">&quot;rmnk_0_2_20_1_0.dat&quot;</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">rmnk</span> <span class="o">=</span> <span class="n">Rmnk</span><span class="p">(</span><span class="n">instance_file</span><span class="o">=</span><span class="n">file_rmnk</span><span class="p">)</span>
 
@@ -234,7 +234,7 @@ parameter <cite>evaluate</cite> is set to True.</p>
 </pre></div>
 </div>
 <p>In practice, it is not necessary to evaluate solutions in our algorithm because when a new solution is generated with our functions,
-the solution is evaluated and all fitness values are accessible in solution.F</p>
+the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in solution.F</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">array_of_fitness</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
@@ -244,9 +244,9 @@ the solution is evaluated and all fitness values are accessible in solution.F</p
 <h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 28%" />
-<col style="width: 28%" />
-<col style="width: 45%" />
+<col style="width: 24%" />
+<col style="width: 38%" />
+<col style="width: 39%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Common Name</p></th>
@@ -255,16 +255,20 @@ the solution is evaluated and all fitness values are accessible in solution.F</p
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Original MOEA/D</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead.algorithm.moead</span></code></p></td>
-<td><p>The original algorithm</p></td>
+<tr class="row-even"><td><p>Original MOEA/D (combinatorial)</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.combinatorial.moead</span></code></p></td>
+<td><p>The original algorithm for combinatorial optimization</p></td>
 </tr>
-<tr class="row-odd"><td><p>MOEA/D with delta and nr</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead.algorithm.moead_delta_nr</span></code></p></td>
+<tr class="row-odd"><td><p>Original MOEA/D (continue/numerical)</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.numerical.moead</span></code></p></td>
+<td><p>The original algorithm for numerical optimization</p></td>
+</tr>
+<tr class="row-even"><td><p>MOEA/D with delta and nr</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.combinatorial.moead_delta_nr</span></code></p></td>
 <td><p>Variant with parameters delta &amp; nr of MOEA/D-DE</p></td>
 </tr>
-<tr class="row-even"><td><p>MOEA/D-DRA</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead.algorithm.moead_dra</span></code></p></td>
+<tr class="row-odd"><td><p>MOEA/D-DRA</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.combinatorial.moead_dra</span></code></p></td>
 <td><p>Variant with a dynamic ressource allocation</p></td>
 </tr>
 </tbody>
@@ -288,8 +292,8 @@ algorithm. Example :</p>
 <h2>Aggregation function<a class="headerlink" href="#aggregation-function" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
+<col style="width: 46%" />
+<col style="width: 54%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Common Name</p></th>
@@ -298,10 +302,10 @@ algorithm. Example :</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Weighted Sum</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead.aggregation.weighted_sum</span></code></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.aggregation.weighted_sum</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>Tchebycheff</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead.aggregation.tchebycheff</span></code></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.aggregation.tchebycheff</span></code></p></td>
 </tr>
 </tbody>
 </table>
