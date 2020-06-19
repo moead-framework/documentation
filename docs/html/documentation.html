@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/custom_theme.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="next" title="Tutorials" href="tuto.html" />
     <link rel="prev" title="Install the MOEA/D Framework" href="install.html" /> 
 </head>
 
@@ -87,10 +87,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#problems">Problems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithms">Algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#aggregation-function">Aggregation function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parent-selector">Parent Selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#genetic-operator">Genetic operator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#offspring-generator">Offspring generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#termination-criteria">Termination criteria</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tuto.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
@@ -282,9 +284,10 @@ algorithm. Example :</p>
           <span class="n">number_of_weight_neighborhood</span><span class="o">=</span><span class="n">number_of_weight_neighborhood</span><span class="p">,</span>
           <span class="n">number_of_crossover_points</span><span class="o">=</span><span class="n">number_of_crossover_points</span><span class="p">,</span>
           <span class="n">weight_file</span><span class="o">=</span><span class="n">weight_file</span><span class="p">,</span>
+          <span class="n">aggregation_function</span><span class="o">=</span><span class="n">Tchebycheff</span><span class="p">,</span>
           <span class="p">)</span>
 
-<span class="n">non_dominated_solutions</span> <span class="o">=</span> <span class="n">moead</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">g</span><span class="o">=</span><span class="n">Tchebycheff</span><span class="p">())</span>
+<span class="n">non_dominated_solutions</span> <span class="o">=</span> <span class="n">moead</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -311,15 +314,79 @@ algorithm. Example :</p>
 </table>
 <p>The aggregation function is used in MOEA/D to decompose the multi-objective problem into several mono-objective problems.
 The two main functions used are the Weighted Sum and the Tchebycheff function. In our framework, the aggregation function
-is a parameter of the function <cite>run()</cite> of the algorithm.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">non_dominated_solutions</span> <span class="o">=</span> <span class="n">moead</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">g</span><span class="o">=</span><span class="n">Tchebycheff</span><span class="p">())</span>
+is a required parameter of the algorithm. It is represented in the framework by a class with two methods :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AggregationFunction</span><span class="p">:</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">number_of_objective</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">sub_problem</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param solution:</span>
+<span class="sd">        :param number_of_objective:</span>
+<span class="sd">        :param weights:</span>
+<span class="sd">        :param sub_problem:</span>
+<span class="sd">        :param z:</span>
+<span class="sd">        :return: the aggregation value of the solution for the weight weights[sub-problem]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">is_better</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param old_value:</span>
+<span class="sd">        :param new_value:</span>
+<span class="sd">        :return: True if new_value (computed by run()) is better than old_value.</span>
+<span class="sd">        The test depends of the aggregation function and of the context (minimization or maximization).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parent-selector">
+<h2>Parent Selector<a class="headerlink" href="#parent-selector" title="Permalink to this headline">¶</a></h2>
+<p>The parent selector is the component used to select solutions in the neighborhood before to use genetic
+operators to generate new offspring. The parent selector is an optional
+parameter of the algorithm, a default operator is used if the parameter is not set.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Common Name</p></th>
+<th class="head"><p>Name in the framework</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Two random solutions</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.parent_selector.two_random_parent_selector</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>One random and current solution</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.parent_selector.one_random_and_current_parent_selector</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Two random and current solution</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.parent_selector.two_random_and_current_parent_selector</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The parent selector is executed with the function select, this function takes in parameter a set of index that represents
+solutions in the population, and more precisely, in the neighborhood. The select function will return solutions that will
+be used to generate new offspring thanks to the genetic operator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ParentSelector</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">algorithm</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="p">):</span>
+        <span class="k">pass</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="genetic-operator">
 <h2>Genetic operator<a class="headerlink" href="#genetic-operator" title="Permalink to this headline">¶</a></h2>
 <p>A genetic operator is a component used in genetics algorithms to generate offspring by
-using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.</p>
+using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
+The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20%" />
@@ -351,15 +418,36 @@ using characteristics of parents solutions. In the framework, these operators ar
 </tr>
 </tbody>
 </table>
+<p>It is represented in the framework by a class with two methods :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GeneticOperator</span><span class="p">:</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solutions</span><span class="p">,</span> <span class="n">crossover_points</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    take in parameter parent solutions required by the operator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solutions</span> <span class="o">=</span> <span class="n">solutions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crossover_points</span> <span class="o">=</span> <span class="n">crossover_points</span>
+
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :return: the new offspring generated by the operator with the parent solutions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
 </div>
-<div class="section" id="offspring-generator">
-<h2>Offspring generator<a class="headerlink" href="#offspring-generator" title="Permalink to this headline">¶</a></h2>
-<p>The offspring generator is the component used to generate new offspring. It defines the method to choose parents solutions
-and then uses the genetic operator to generate the offspring.</p>
+</div>
+<div class="section" id="termination-criteria">
+<h2>Termination criteria<a class="headerlink" href="#termination-criteria" title="Permalink to this headline">¶</a></h2>
+<p>The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
+a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
+The termination criteria is an optional parameter of the algorithm.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 34%" />
-<col style="width: 66%" />
+<col style="width: 39%" />
+<col style="width: 61%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Common Name</p></th>
@@ -367,14 +455,8 @@ and then uses the genetic operator to generate the offspring.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Two random solutions</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.offspring_generator.two_random_parents</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>One random and current solution</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.offspring_generator.one_random_and_current_parents</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>Two random and current solution</p></td>
-<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.offspring_generator.two_random_and_current_parents</span></code></p></td>
+<tr class="row-even"><td><p>Maximum number of evaluation</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.termination_criteria.max_evaluation</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -389,7 +471,7 @@ and then uses the genetic operator to generate the offspring.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tuto.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="install.html" class="btn btn-neutral float-left" title="Install the MOEA/D Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -86,9 +86,10 @@ algorithm. Example :
               number_of_weight_neighborhood=number_of_weight_neighborhood,
               number_of_crossover_points=number_of_crossover_points,
               weight_file=weight_file,
+              aggregation_function=Tchebycheff,
               )
 
-    non_dominated_solutions = moead.run(g=Tchebycheff())
+    non_dominated_solutions = moead.run()
 
 
 Aggregation function
@@ -102,17 +103,72 @@ Tchebycheff                               :class:`moead_framework.aggregation.tc
 
 The aggregation function is used in MOEA/D to decompose the multi-objective problem into several mono-objective problems. 
 The two main functions used are the Weighted Sum and the Tchebycheff function. In our framework, the aggregation function
-is a parameter of the function `run()` of the algorithm.
+is a required parameter of the algorithm. It is represented in the framework by a class with two methods : 
 
 .. code-block:: python
 
-    non_dominated_solutions = moead.run(g=Tchebycheff())
+    class AggregationFunction:
+
+        @abstractmethod
+        def run(self, solution, number_of_objective, weights, sub_problem, z):
+            """
+            :param solution:
+            :param number_of_objective:
+            :param weights:
+            :param sub_problem:
+            :param z:
+            :return: the aggregation value of the solution for the weight weights[sub-problem]
+            """
+            pass
+
+        @abstractmethod
+        def is_better(self, old_value, new_value):
+            """
+            :param old_value:
+            :param new_value:
+            :return: True if new_value (computed by run()) is better than old_value.
+            The test depends of the aggregation function and of the context (minimization or maximization).
+            """
+            pass
+
+
+Parent Selector
+--------------------------------------
+The parent selector is the component used to select solutions in the neighborhood before to use genetic 
+operators to generate new offspring. The parent selector is an optional 
+parameter of the algorithm, a default operator is used if the parameter is not set.
+
+========================================= ========================================= 
+Common Name                               Name in the framework                    
+========================================= ========================================= 
+Two random solutions                      :class:`moead_framework.core.parent_selector.two_random_parent_selector`    
+One random and current solution           :class:`moead_framework.core.parent_selector.one_random_and_current_parent_selector`    
+Two random and current solution           :class:`moead_framework.core.parent_selector.two_random_and_current_parent_selector`    
+========================================= ========================================= 
+
+The parent selector is executed with the function select, this function takes in parameter a set of index that represents
+solutions in the population, and more precisely, in the neighborhood. The select function will return solutions that will 
+be used to generate new offspring thanks to the genetic operator.
+
+
+.. code-block:: python
+
+    class ParentSelector:
+
+        def __init__(self, algorithm):
+            self.algorithm = algorithm
+
+        @abstractmethod
+        def select(self, indexes):
+            pass
+
 
 
 Genetic operator
 --------------------------------------
 A genetic operator is a component used in genetics algorithms to generate offspring by 
 using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
+The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.
 
 ========================================= ============================================================================================= ===================================================================
 Common Name                               Name in the framework                                                                         Reference
@@ -123,16 +179,38 @@ Differential Evolution Crossover          :class:`moead_framework.core.genetic_o
 Polynomial mutation                       :class:`moead_framework.core.genetic_operator.numerical.polynomial_mutation`                  [0]
 ========================================= ============================================================================================= ===================================================================
 
+It is represented in the framework by a class with two methods : 
 
-Offspring generator
+.. code-block:: python
+
+    class GeneticOperator:
+
+        @abstractmethod
+        def __init__(self, solutions, crossover_points=1):        
+        """
+        take in parameter parent solutions required by the operator
+        """
+            self.solutions = solutions
+            self.crossover_points = crossover_points
+        
+
+        @abstractmethod
+        def run(self):
+        """
+        :return: the new offspring generated by the operator with the parent solutions
+        """
+            pass
+
+
+
+Termination criteria
 --------------------------------------
-The offspring generator is the component used to generate new offspring. It defines the method to choose parents solutions
-and then uses the genetic operator to generate the offspring.
+The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
+a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
+The termination criteria is an optional parameter of the algorithm.
 
 ========================================= ========================================= 
 Common Name                               Name in the framework                    
 ========================================= ========================================= 
-Two random solutions                      :class:`moead_framework.core.offspring_generator.two_random_parents`    
-One random and current solution           :class:`moead_framework.core.offspring_generator.one_random_and_current_parents`    
-Two random and current solution           :class:`moead_framework.core.offspring_generator.two_random_and_current_parents`    
+Maximum number of evaluation              :class:`moead_framework.core.termination_criteria.max_evaluation`    
 ========================================= ========================================= 

@@ -12,6 +12,7 @@ Welcome to Moead-Framework's documentation!
 
    install
    documentation
+   tuto
    examples
 
 
