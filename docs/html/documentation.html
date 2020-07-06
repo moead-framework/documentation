@@ -89,7 +89,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#aggregation-function">Aggregation function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#parent-selector">Parent Selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#genetic-operator">Genetic operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#offspring-generator">Offspring Generator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#termination-criteria">Termination criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sps-sub-problem-selection-strategy">SPS (Sub-Problem Selection) Strategy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tuto.html">Tutorials</a></li>
@@ -162,6 +164,7 @@
 <h1>Components of MOEA/D framework<a class="headerlink" href="#components-of-moea-d-framework" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Permalink to this headline">¶</a></h2>
+<p>The problem is set in the algorithm contructor with the parameter ‘problem’.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -293,6 +296,7 @@ algorithm. Example :</p>
 </div>
 <div class="section" id="aggregation-function">
 <h2>Aggregation function<a class="headerlink" href="#aggregation-function" title="Permalink to this headline">¶</a></h2>
+<p>The aggregation function is set in the algorithm contructor with the parameter ‘aggregation_function’.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 46%" />
@@ -343,6 +347,7 @@ is a required parameter of the algorithm. It is represented in the framework by 
 </div>
 <div class="section" id="parent-selector">
 <h2>Parent Selector<a class="headerlink" href="#parent-selector" title="Permalink to this headline">¶</a></h2>
+<p>The parent selector is set in the algorithm contructor with the parameter ‘parent_selector’.</p>
 <p>The parent selector is the component used to select solutions in the neighborhood before to use genetic
 operators to generate new offspring. The parent selector is an optional
 parameter of the algorithm, a default operator is used if the parameter is not set.</p>
@@ -384,6 +389,7 @@ be used to generate new offspring thanks to the genetic operator.</p>
 </div>
 <div class="section" id="genetic-operator">
 <h2>Genetic operator<a class="headerlink" href="#genetic-operator" title="Permalink to this headline">¶</a></h2>
+<p>The genetic operator is set in the algorithm contructor with the parameter ‘genetic_operator’.</p>
 <p>A genetic operator is a component used in genetics algorithms to generate offspring by
 using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
 The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.</p>
@@ -439,8 +445,39 @@ The genetic operator is an optional parameter of the algorithm, a default operat
 </pre></div>
 </div>
 </div>
+<div class="section" id="offspring-generator">
+<h2>Offspring Generator<a class="headerlink" href="#offspring-generator" title="Permalink to this headline">¶</a></h2>
+<p>The offspring generator is set in the algorithm contructor with the parameter ‘offspring_generator’.</p>
+<p>The offspring generator is the component that manage all the process to generate new offspring by
+using components ‘Parent Selector’ and ‘Genetic operator’. By default, this component is fixed because
+it is generic for almost all variants of MOEA/D when we need to generate one offspring. This component can be updated
+and sent in parameter of the MOEAD class if you want to use new components such as surrogates models for example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OffspringGeneratorGeneric</span><span class="p">(</span><span class="n">OffspringGenerator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_indexes</span><span class="p">):</span>
+
+        <span class="n">parents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">parent_selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">indexes</span><span class="o">=</span><span class="n">population_indexes</span><span class="p">)</span>
+
+        <span class="n">parents_solutions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+            <span class="n">parents_solutions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">solution</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">,</span> <span class="s1">&#39;number_of_crossover_points&#39;</span><span class="p">):</span>
+            <span class="n">crossover_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">number_of_crossover_points</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">crossover_point</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">y_sol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">genetic_operator</span><span class="p">(</span><span class="n">solutions</span><span class="o">=</span><span class="n">parents_solutions</span><span class="p">,</span>
+                                                <span class="n">crossover_points</span><span class="o">=</span><span class="n">crossover_point</span>
+                                                <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">generate_solution</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="n">y_sol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="termination-criteria">
 <h2>Termination criteria<a class="headerlink" href="#termination-criteria" title="Permalink to this headline">¶</a></h2>
+<p>The termination criteria is set in the algorithm contructor with the parameter ‘termination_criteria’.</p>
 <p>The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
 a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
 The termination criteria is an optional parameter of the algorithm.</p>
@@ -457,6 +494,35 @@ The termination criteria is an optional parameter of the algorithm.</p>
 <tbody>
 <tr class="row-even"><td><p>Maximum number of evaluation</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.termination_criteria.max_evaluation</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sps-sub-problem-selection-strategy">
+<h2>SPS (Sub-Problem Selection) Strategy<a class="headerlink" href="#sps-sub-problem-selection-strategy" title="Permalink to this headline">¶</a></h2>
+<p>The sps strategy is set in the algorithm contructor with the parameter ‘sps_strategy’.</p>
+<p>The SPS Strategy is the component used to select sub-problems (or solutions of the population) that will be visited during the next
+generation of MOEA/D. The default SPS is the strategy of the classic MOEA/D where all
+sub-problems are visited during one generation.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 55%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Common Name</p></th>
+<th class="head"><p>Name in the framework</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPS that iterate over all sub-problems</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.sps_strategy.sps_all</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>SPS Strategy used in MOEA/D-DRA</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.sps_strategy.sps_dra</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SPS Strategy to select random and boundaries sub-problems</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.sps_strategy.sps_random_and_boundaries.py</span></code></p></td>
 </tr>
 </tbody>
 </table>

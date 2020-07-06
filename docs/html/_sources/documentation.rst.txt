@@ -6,6 +6,8 @@ Components of MOEA/D framework
 Problems 
 --------------------------------------
 
+The problem is set in the algorithm contructor with the parameter 'problem'.
+
 ========================================= ======================================================= ===================================================================
 Common Name                               Name in the framework                                   Comments
 ========================================= ======================================================= ===================================================================
@@ -13,7 +15,7 @@ rho MNK-Landscapes                        :class:`moead_framework.problem.combin
 Multi-objective Knapsack                  :class:`moead_framework.problem.combinatorial.knapsack` The problem needs an instance file in parameter
 Zdt1                                      :class:`moead_framework.problem.numerical.zdt`          The problem needs the number of variables in parameter
 ========================================= ======================================================= ===================================================================
-
+ 
 
 Some problems need an instance file, you can find some files in https://github.com/moead-framework/data/tree/master/problem
 
@@ -94,6 +96,9 @@ algorithm. Example :
 
 Aggregation function
 --------------------------------------
+
+The aggregation function is set in the algorithm contructor with the parameter 'aggregation_function'.
+
 ========================================= ========================================= 
 Common Name                               Name in the framework                    
 ========================================= ========================================= 
@@ -134,6 +139,9 @@ is a required parameter of the algorithm. It is represented in the framework by 
 
 Parent Selector
 --------------------------------------
+
+The parent selector is set in the algorithm contructor with the parameter 'parent_selector'.
+
 The parent selector is the component used to select solutions in the neighborhood before to use genetic 
 operators to generate new offspring. The parent selector is an optional 
 parameter of the algorithm, a default operator is used if the parameter is not set.
@@ -166,6 +174,9 @@ be used to generate new offspring thanks to the genetic operator.
 
 Genetic operator
 --------------------------------------
+
+The genetic operator is set in the algorithm contructor with the parameter 'genetic_operator'.
+
 A genetic operator is a component used in genetics algorithms to generate offspring by 
 using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
 The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.
@@ -202,9 +213,46 @@ It is represented in the framework by a class with two methods :
             pass
 
 
+Offspring Generator
+--------------------------------------
+
+The offspring generator is set in the algorithm contructor with the parameter 'offspring_generator'.
+
+The offspring generator is the component that manage all the process to generate new offspring by 
+using components 'Parent Selector' and 'Genetic operator'. By default, this component is fixed because 
+it is generic for almost all variants of MOEA/D when we need to generate one offspring. This component can be updated 
+and sent in parameter of the MOEAD class if you want to use new components such as surrogates models for example.
+
+.. code-block:: python
+
+    class OffspringGeneratorGeneric(OffspringGenerator):
+
+        def run(self, population_indexes):
+
+            parents = self.algorithm.parent_selector.select(indexes=population_indexes)
+
+            parents_solutions = []
+            for s in parents:
+                parents_solutions.append(s.solution)
+
+            if hasattr(self.algorithm, 'number_of_crossover_points'):
+                crossover_point = self.algorithm.number_of_crossover_points
+            else:
+                crossover_point = None
+
+            y_sol = self.algorithm.genetic_operator(solutions=parents_solutions,
+                                                    crossover_points=crossover_point
+                                                    ).run()
+
+            return self.algorithm.problem.generate_solution(array=y_sol)
+
+
 
 Termination criteria
 --------------------------------------
+
+The termination criteria is set in the algorithm contructor with the parameter 'termination_criteria'.
+
 The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
 a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
 The termination criteria is an optional parameter of the algorithm.
@@ -214,3 +262,22 @@ Common Name                               Name in the framework
 ========================================= ========================================= 
 Maximum number of evaluation              :class:`moead_framework.core.termination_criteria.max_evaluation`    
 ========================================= ========================================= 
+
+
+SPS (Sub-Problem Selection) Strategy
+--------------------------------------
+
+The sps strategy is set in the algorithm contructor with the parameter 'sps_strategy'.
+
+The SPS Strategy is the component used to select sub-problems (or solutions of the population) that will be visited during the next 
+generation of MOEA/D. The default SPS is the strategy of the classic MOEA/D where all
+sub-problems are visited during one generation.
+
+========================================================== ========================================= 
+Common Name                                                Name in the framework                    
+========================================================== ========================================= 
+SPS that iterate over all sub-problems                     :class:`moead_framework.core.sps_strategy.sps_all`    
+SPS Strategy used in MOEA/D-DRA                            :class:`moead_framework.core.sps_strategy.sps_dra`    
+SPS Strategy to select random and boundaries sub-problems  :class:`moead_framework.core.sps_strategy.sps_random_and_boundaries.py`    
+========================================================== ========================================= 
+
