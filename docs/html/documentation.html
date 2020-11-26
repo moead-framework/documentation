@@ -164,7 +164,6 @@
 <h1>Components of MOEA/D framework<a class="headerlink" href="#components-of-moea-d-framework" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="problems">
 <h2>Problems<a class="headerlink" href="#problems" title="Permalink to this headline">¶</a></h2>
-<p>The problem is set in the algorithm contructor with the parameter ‘problem’.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -192,8 +191,13 @@
 </tr>
 </tbody>
 </table>
-<p>Some problems need an instance file, you can find some files in <a class="reference external" href="https://github.com/moead-framework/data/tree/master/problem">https://github.com/moead-framework/data/tree/master/problem</a></p>
-<p>Three functions are available in a problem :</p>
+<p>Three benchmark problems are available in the framework. If the problem needs an instance file, you can find some instances
+in this repository <a class="reference external" href="https://github.com/moead-framework/data/tree/master/problem">https://github.com/moead-framework/data/tree/master/problem</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can implement your own problem by following <a class="reference internal" href="tuto.html#tuto-problem"><span class="std std-ref">this tutoriel</span></a>.</p>
+</div>
+<p>Three functions are available in a problem object:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -216,32 +220,34 @@
 </tr>
 </tbody>
 </table>
-<p>A solution is a <cite>OneDimensionSolution</cite> object. This object save the array in the attribute
-<cite>OneDimensionSolution.solution</cite>, the fitness is save in the array <cite>OneDimensionSolution.F</cite> if the
-parameter <cite>evaluate</cite> is set to True.</p>
+<p>A solution is a <code class="code docutils literal notranslate"><span class="pre">OneDimensionSolution</span></code> object. This object save the array in the attribute
+<code class="code docutils literal notranslate"><span class="pre">OneDimensionSolution.solution</span></code>, the fitness is save in the array  <code class="code docutils literal notranslate"><span class="pre">OneDimensionSolution.F</span></code> if the
+parameter <code class="code docutils literal notranslate"><span class="pre">evaluate</span></code> is set to True.</p>
 <p>Example with the problem rho MNK-Landscapes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">moead_framework.problem.combinatorial.rmnk</span> <span class="kn">import</span> <span class="n">Rmnk</span>
 
 <span class="c1"># the file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat</span>
 <span class="c1"># rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">file_rmnk</span> <span class="o">=</span> <span class="s2">&quot;rmnk_0_2_20_1_0.dat&quot;</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">rmnk</span> <span class="o">=</span> <span class="n">Rmnk</span><span class="p">(</span><span class="n">instance_file</span><span class="o">=</span><span class="n">file_rmnk</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">problem</span> <span class="o">=</span> <span class="n">Rmnk</span><span class="p">(</span><span class="n">instance_file</span><span class="o">=</span><span class="n">file_rmnk</span><span class="p">)</span>
 
 <span class="c1"># Generate a random solution</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">rmnk</span><span class="o">.</span><span class="n">generate_random_solution</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">generate_random_solution</span><span class="p">()</span>
 
 <span class="c1"># Generate a solution with predefined values</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">rmnk</span><span class="o">.</span><span class="n">generate_solution</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">generate_solution</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># evaluate the solution for the function f0 and f1 of the problem</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">rmnk</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">rmnk</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In practice, it is not necessary to evaluate solutions in our algorithm because when a new solution is generated with our functions,
-the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in solution.F</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">array_of_fitness</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in <code class="code docutils literal notranslate"><span class="pre">solution.F</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">generate_random_solution</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">array_of_fitness</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -285,13 +291,16 @@ algorithm. Example :</p>
           <span class="n">number_of_objective</span><span class="o">=</span><span class="n">number_of_objective</span><span class="p">,</span>
           <span class="n">number_of_weight</span><span class="o">=</span><span class="n">number_of_weight</span><span class="p">,</span>
           <span class="n">number_of_weight_neighborhood</span><span class="o">=</span><span class="n">number_of_weight_neighborhood</span><span class="p">,</span>
-          <span class="n">number_of_crossover_points</span><span class="o">=</span><span class="n">number_of_crossover_points</span><span class="p">,</span>
           <span class="n">weight_file</span><span class="o">=</span><span class="n">weight_file</span><span class="p">,</span>
           <span class="n">aggregation_function</span><span class="o">=</span><span class="n">Tchebycheff</span><span class="p">,</span>
           <span class="p">)</span>
 
 <span class="n">non_dominated_solutions</span> <span class="o">=</span> <span class="n">moead</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want know more about all algorithms already available in the framework, you can find their implementation in <a class="reference external" href="https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm">https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm</a>.</p>
 </div>
 </div>
 <div class="section" id="aggregation-function">

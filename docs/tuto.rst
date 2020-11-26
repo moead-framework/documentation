@@ -1,13 +1,15 @@
+
+
 Tutorials
 ===========================================
 
-
+.. _tuto-problem:
 Implement your own problem
 --------------------------------------
-To make your problem compliant with the framework, your problem class have to extend the class *'moead_framework.problem.Problem'* 
+To make your problem compliant with the framework, your problem class have to extend the class :class:`moead_framework.problem.Problem` 
 and also implement the 3 required functions : 
 
-- the fitness function *f* has 2 required parameters. The function must returns the objectif value of the solution 
+- the fitness function :code:`f(function_id, solution)` has 2 required parameters. The function must returns the objectif value of the solution 
   for the objective function_id in parameter.
 
 .. code-block:: python
@@ -18,12 +20,11 @@ and also implement the 3 required functions :
 
 
 
-- The function *generate_solution* allows to generate a solution. A solution is an object OneDimensionSolution that contains 
- the representation of the solution in the attribute solution and all fitness values in the F attribute. 
+- The function :code:`generate_solution(array, evaluate)` allows to generate a solution. A solution is an object OneDimensionSolution that contains the representation of the solution in the attribute solution and all fitness values in the F attribute. 
  
  .. note:: All components of the framework available in this version are only compatible with OneDimensionSolution. If you want manage new type of solutions, you have to adapt other components of the framework. 
  
- The *generate_solution* function takes in parameter the representation of the function and the boolean 'evaluate' 
+ The function :code:`generate_solution(array, evaluate)` takes in parameter the representation of the function and the boolean :code:`evaluate` 
  that determine if the solution save the fitness, the default value must be "True".
 
 .. code-block:: python
@@ -40,7 +41,7 @@ and also implement the 3 required functions :
             return x
   
 
-- The *generate_random_solution* generates a solution randomly in the same way than the previous function.
+- The function :code:`generate_random_solution(evaluate)` generates a solution **randomly** in the same way than the previous function.
 
 .. code-block:: python
 
@@ -53,6 +54,13 @@ and also implement the 3 required functions :
 Implement your own algorithm with the framework
 --------------------------------------------------------------------
 
-Easy way : develop your own component and use it in parameter of an existing algorithm
+ :ref:`All components<_components>`
 
 Advanced way : extent an existing algorithm
+
+
+Save data in the framework
+--------------------------------------------------------------------
+
+- save_population 
+- checkoint in run()

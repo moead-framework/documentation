@@ -1,12 +1,10 @@
-
+.. _components:
 Components of MOEA/D framework
 ===========================================
 
 
 Problems 
 --------------------------------------
-
-The problem is set in the algorithm contructor with the parameter 'problem'.
 
 ========================================= ======================================================= ===================================================================
 Common Name                               Name in the framework                                   Comments
@@ -16,11 +14,12 @@ Multi-objective Knapsack                  :class:`moead_framework.problem.combin
 Zdt1                                      :class:`moead_framework.problem.numerical.zdt`          The problem needs the number of variables in parameter
 ========================================= ======================================================= ===================================================================
  
+Three benchmark problems are available in the framework. If the problem needs an instance file, you can find some instances
+in this repository https://github.com/moead-framework/data/tree/master/problem. 
 
-Some problems need an instance file, you can find some files in https://github.com/moead-framework/data/tree/master/problem
+.. note:: You can implement your own problem by following :ref:`this tutoriel<tuto-problem>`.
 
-   
-Three functions are available in a problem : 
+Three functions are available in a problem object: 
 
 =================================================== ===================================================================
 Function                                            Comments
@@ -30,9 +29,9 @@ problem.generate_solution(x, evaluate)              Convert the list `x` to a So
 problem.f(i, solution)                              Return the fitness value of the function `i`.
 =================================================== ===================================================================
 
-A solution is a `OneDimensionSolution` object. This object save the array in the attribute 
-`OneDimensionSolution.solution`, the fitness is save in the array `OneDimensionSolution.F` if the  
-parameter `evaluate` is set to True.
+A solution is a :code:`OneDimensionSolution` object. This object save the array in the attribute 
+:code:`OneDimensionSolution.solution`, the fitness is save in the array  :code:`OneDimensionSolution.F` if the  
+parameter :code:`evaluate` is set to True.
 
 Example with the problem rho MNK-Landscapes:
 
@@ -43,25 +42,27 @@ Example with the problem rho MNK-Landscapes:
     # the file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat
     # rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0
     In [2]: file_rmnk = "rmnk_0_2_20_1_0.dat"  
-    In [3]: rmnk = Rmnk(instance_file=file_rmnk) 
+    In [3]: problem = Rmnk(instance_file=file_rmnk) 
 
     # Generate a random solution
-    In [4]: solution = rmnk.generate_random_solution()
+    In [4]: solution = problem.generate_random_solution()
 
     # Generate a solution with predefined values
-    In [5]: solution = rmnk.generate_solution([0,1,1,1,0,1,0,0,1,0])
+    In [5]: solution = problem.generate_solution([0,1,1,1,0,1,0,0,1,0])
 
     # evaluate the solution for the function f0 and f1 of the problem
-    In [6]: f0 = rmnk.f(0, solution)
-    In [7]: f1 = rmnk.f(1, solution)
+    In [6]: f0 = problem.f(0, solution)
+    In [7]: f1 = problem.f(1, solution)
 
 In practice, it is not necessary to evaluate solutions in our algorithm because when a new solution is generated with our functions, 
-the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in solution.F
+the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in :code:`solution.F`
 
 .. code-block:: python
-    
-    In [8]: array_of_fitness = solution.F
-    In [9]: f1 = solution.F[1]
+
+    In [8]: solution = problem.generate_random_solution()
+    In [9]: array_of_fitness = solution.F
+    In [10]: f0 = solution.F[0]
+    In [11]: f1 = solution.F[1]
 
 
 Algorithms
@@ -86,12 +87,13 @@ algorithm. Example :
               number_of_objective=number_of_objective,
               number_of_weight=number_of_weight,
               number_of_weight_neighborhood=number_of_weight_neighborhood,
-              number_of_crossover_points=number_of_crossover_points,
               weight_file=weight_file,
               aggregation_function=Tchebycheff,
               )
 
     non_dominated_solutions = moead.run()
+
+.. note:: If you want know more about all algorithms already available in the framework, you can find their implementation in https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm.
 
 
 Aggregation function

@@ -165,8 +165,9 @@
 <span class="c1">###############################</span>
 <span class="c1">#      Init the problem       #</span>
 <span class="c1">###############################</span>
+<span class="c1"># The file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_100_1_0.dat</span>
 <span class="c1"># Others instances are available here : https://github.com/moead-framework/data/tree/master/problem/RMNK/Instances</span>
-<span class="n">instance_file</span> <span class="o">=</span> <span class="s2">&quot;moead_framework/test/data/RMNK/Instances/rmnk_0_2_100_1_0.dat&quot;</span>
+<span class="n">instance_file</span> <span class="o">=</span> <span class="s2">&quot;rmnk_0_2_100_1_0.dat&quot;</span>
 <span class="n">rmnk</span> <span class="o">=</span> <span class="n">Rmnk</span><span class="p">(</span><span class="n">instance_file</span><span class="o">=</span><span class="n">instance_file</span><span class="p">)</span>
 
 
@@ -176,11 +177,10 @@
 <span class="n">number_of_objective</span> <span class="o">=</span> <span class="n">rmnk</span><span class="o">.</span><span class="n">function_numbers</span>
 <span class="n">number_of_weight</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">number_of_weight_neighborhood</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">number_of_crossover_points</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">number_of_evaluations</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="c1"># The file is available here : https://github.com/moead-framework/data/blob/master/weights/SOBOL-2objs-10wei.ws</span>
 <span class="c1"># Others weights files are available here : https://github.com/moead-framework/data/tree/master/weights</span>
-<span class="n">weight_file</span> <span class="o">=</span> <span class="s2">&quot;moead_framework/test/data/weights/SOBOL-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">number_of_objective</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;objs-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">number_of_weight</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;wei.ws&quot;</span>
-
+<span class="n">weight_file</span> <span class="o">=</span> <span class="s2">&quot;SOBOL-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">number_of_objective</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;objs-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">number_of_weight</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;wei.ws&quot;</span>
 
 
 <span class="c1">###############################</span>
@@ -191,7 +191,6 @@
               <span class="n">number_of_objective</span><span class="o">=</span><span class="n">number_of_objective</span><span class="p">,</span>
               <span class="n">number_of_weight</span><span class="o">=</span><span class="n">number_of_weight</span><span class="p">,</span>
               <span class="n">number_of_weight_neighborhood</span><span class="o">=</span><span class="n">number_of_weight_neighborhood</span><span class="p">,</span>
-              <span class="n">number_of_crossover_points</span><span class="o">=</span><span class="n">number_of_crossover_points</span><span class="p">,</span>
               <span class="n">weight_file</span><span class="o">=</span><span class="n">weight_file</span><span class="p">,</span>
               <span class="n">aggregation_function</span><span class="o">=</span><span class="n">Tchebycheff</span><span class="p">,</span>
               <span class="p">)</span>

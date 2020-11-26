@@ -19,7 +19,11 @@ Welcome to Moead-Framework's documentation!
 **MOEA/D** (*Multi-objective evolutionary algorithm based on decomposition*) 
 is a general-purpose algorithm framework. It decomposes a multi-objective 
 optimization problem into a number of single-objective optimization sub-problems 
-(or simple multi-objective optimization problems) and then uses a search heuristic to 
-optimize these sub-problems simultaneously and cooperatively.
+and then uses a search heuristic to 
+optimize these sub-problems simultaneously and cooperatively. **MOEA/D** is a state-of-art framework 
+in aggregation-based approaches for multi-objective optimization. 
+
+The goal of this python package is to provide a modular framework for researchers who are working 
+on variants of **MOEA/D**.
 
 
