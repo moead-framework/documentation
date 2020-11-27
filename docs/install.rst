@@ -1,5 +1,5 @@
 
-Install the MOEA/D Framework
+Installation
 ===========================================
 
 The framework is available open-source under the GPL v3 license. 

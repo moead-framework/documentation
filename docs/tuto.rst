@@ -12,6 +12,8 @@ and also implement the 3 required functions :
 - the fitness function :code:`f(function_id, solution)` has 2 required parameters. The function must returns the objectif value of the solution 
   for the objective function_id in parameter.
 
+  .. note:: For a better compatibility between our components, problems should be converted in minimization problems.
+
 .. code-block:: python
     
     def f(self, function_id, solution):
@@ -51,16 +53,70 @@ and also implement the 3 required functions :
 
 
 
-Implement your own algorithm with the framework
+Implement your own algorithm
 --------------------------------------------------------------------
 
- :ref:`All components<_components>`
+:ref:`All components<components>` are set with default values to implement the first version of **MOEA/D**. 
+You can customize each :ref:`algorithms<components_algo>` of the framework with your own 
+components that you can set in parameter of the algorithm contructor.
 
-Advanced way : extent an existing algorithm
+Example for :class:`moead_framework.algorithm.combinatorial.moead` :
+
+.. code-block:: python
+
+    moead = Moead(
+              # Mandatory parameters
+              problem=rmnk,
+              max_evaluation = number_of_evaluations,
+              number_of_objective=number_of_objective,
+              number_of_weight=number_of_weight,
+              number_of_weight_neighborhood=number_of_weight_neighborhood,
+              weight_file=weight_file,
+              aggregation_function=Tchebycheff,
+              # Optional parameters
+              termination_criteria=MaxEvaluation,
+              number_of_crossover_points=2,
+              mating_pool_selector=ClosestNeighborsSelector,
+              genetic_operator=CrossoverAndMutation,
+              parent_selector=TwoRandomParentSelector,
+              sps_strategy=SpsAllSubproblems,
+              offspring_generator=OffspringGeneratorGeneric
+              )
+    
+    
+
+If you want manage the way to use all this :ref:`components<components>`, you have to create 
+a new algorithm by extending an available algorithm. Examples are available in this repository : https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm.
+
+For example with the implementation of MOEA/D-DE (https://ieeexplore.ieee.org/document/4633340) in the class :class:`moead_framework.algorithm.combinatorial.moead_delta_nr` that extends **Moead** to rewrite the 
+function update_solutions() and add two new parameters. 
 
 
-Save data in the framework
+Save data with the framework
 --------------------------------------------------------------------
 
-- save_population 
-- checkoint in run()
+You can easily save a set of solutions by using the function :code:`save_population("population.txt", population)`. 
+The function must be imported with : :code:`from moead_framework.tool.result import save_population`.
+
+
+If you want save all non-dominated solutions (attribute :code:`self.ep` in the algorithm) every 10 evaluations, you can use the checkpoint parameter of the function :code:`algorithm.run()` :
+
+
+.. code-block:: python
+
+    moead = Moead(
+              problem=rmnk,
+              max_evaluation = number_of_evaluations,
+              number_of_objective=number_of_objective,
+              number_of_weight=number_of_weight,
+              number_of_weight_neighborhood=number_of_weight_neighborhood,
+              weight_file=weight_file,
+              aggregation_function=Tchebycheff
+              )
+
+    def checkpt():
+        if moead.current_eval % 10 ==0 :      
+            filename = "non_dominated_solutions-eval" + str(moead.current_eval) + ".txt"
+            save_population(file_name=filename, population=moead.ep)
+    
+    moead.run(checkpoint=checkpt)

@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tutorials" href="tuto.html" />
-    <link rel="prev" title="Install the MOEA/D Framework" href="install.html" /> 
+    <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,10 +82,11 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="install.html">Install the MOEA/D Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Components of MOEA/D framework</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#problems">Problems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithms">Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#weight-vectors">Weight vectors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#aggregation-function">Aggregation function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#parent-selector">Parent Selector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#genetic-operator">Genetic operator</a></li>
@@ -191,7 +192,7 @@
 </tr>
 </tbody>
 </table>
-<p>Three benchmark problems are available in the framework. If the problem needs an instance file, you can find some instances
+<p>Three benchmark problems are available in the framework. You can find file instances for combinatorial problems
 in this repository <a class="reference external" href="https://github.com/moead-framework/data/tree/master/problem">https://github.com/moead-framework/data/tree/master/problem</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -237,17 +238,10 @@ parameter <code class="code docutils literal notranslate"><span class="pre">eval
 <span class="c1"># Generate a solution with predefined values</span>
 <span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">generate_solution</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="c1"># evaluate the solution for the function f0 and f1 of the problem</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>In practice, it is not necessary to evaluate solutions in our algorithm because when a new solution is generated with our functions,
-the solution is evaluated (if the parameter is not set to False) and all fitness values are accessible in <code class="code docutils literal notranslate"><span class="pre">solution.F</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">generate_random_solution</span><span class="p">()</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">array_of_fitness</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># Get objective value of the solution</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">array_of_fitness</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">f0</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -284,7 +278,7 @@ the solution is evaluated (if the parameter is not set to False) and all fitness
 </tr>
 </tbody>
 </table>
-<p>Each algorithm can be executed with the <cite>run()</cite> function. This function return all non dominated solutions found by the
+<p>Each algorithm can be executed with the <code class="code docutils literal notranslate"><span class="pre">run()</span></code> function. This function return all non dominated solutions found by the
 algorithm. Example :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">moead</span> <span class="o">=</span> <span class="n">Moead</span><span class="p">(</span><span class="n">problem</span><span class="o">=</span><span class="n">rmnk</span><span class="p">,</span>
           <span class="n">max_evaluation</span> <span class="o">=</span> <span class="n">number_of_evaluations</span><span class="p">,</span>
@@ -303,9 +297,15 @@ algorithm. Example :</p>
 <p>If you want know more about all algorithms already available in the framework, you can find their implementation in <a class="reference external" href="https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm">https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm</a>.</p>
 </div>
 </div>
+<div class="section" id="weight-vectors">
+<h2>Weight vectors<a class="headerlink" href="#weight-vectors" title="Permalink to this headline">¶</a></h2>
+<p>For the decomposition of the multi-objective problems, we need weight vectors.
+These weights are set by using a text file in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">weight_file</span></code> and the parameter <code class="code docutils literal notranslate"><span class="pre">number_of_weight</span></code>.
+We propose weight files in this repository : <a class="reference external" href="https://github.com/moead-framework/data/tree/master/weights">https://github.com/moead-framework/data/tree/master/weights</a>.</p>
+</div>
 <div class="section" id="aggregation-function">
 <h2>Aggregation function<a class="headerlink" href="#aggregation-function" title="Permalink to this headline">¶</a></h2>
-<p>The aggregation function is set in the algorithm contructor with the parameter ‘aggregation_function’.</p>
+<p>The aggregation function is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">aggregation_function</span></code>.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 46%" />
@@ -356,7 +356,7 @@ is a required parameter of the algorithm. It is represented in the framework by 
 </div>
 <div class="section" id="parent-selector">
 <h2>Parent Selector<a class="headerlink" href="#parent-selector" title="Permalink to this headline">¶</a></h2>
-<p>The parent selector is set in the algorithm contructor with the parameter ‘parent_selector’.</p>
+<p>The parent selector is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">parent_selector</span></code>.</p>
 <p>The parent selector is the component used to select solutions in the neighborhood before to use genetic
 operators to generate new offspring. The parent selector is an optional
 parameter of the algorithm, a default operator is used if the parameter is not set.</p>
@@ -398,38 +398,32 @@ be used to generate new offspring thanks to the genetic operator.</p>
 </div>
 <div class="section" id="genetic-operator">
 <h2>Genetic operator<a class="headerlink" href="#genetic-operator" title="Permalink to this headline">¶</a></h2>
-<p>The genetic operator is set in the algorithm contructor with the parameter ‘genetic_operator’.</p>
+<p>The genetic operator is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">genetic_operator</span></code>.</p>
 <p>A genetic operator is a component used in genetics algorithms to generate offspring by
 using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
 The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 20%" />
-<col style="width: 46%" />
-<col style="width: 33%" />
+<col style="width: 31%" />
+<col style="width: 69%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Common Name</p></th>
 <th class="head"><p>Name in the framework</p></th>
-<th class="head"><p>Reference</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Multi-point combinatorial crossover</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.genetic_operator.combinatorial.crossover</span></code></p></td>
-<td><p>[0]</p></td>
 </tr>
 <tr class="row-odd"><td><p>Binary mutation</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.genetic_operator.combinatorial.mutation</span></code></p></td>
-<td><p>[0]</p></td>
 </tr>
 <tr class="row-even"><td><p>Differential Evolution Crossover</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.genetic_operator.numerical.differential_evolution_crossover</span></code></p></td>
-<td><p>[0]</p></td>
 </tr>
 <tr class="row-odd"><td><p>Polynomial mutation</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.core.genetic_operator.numerical.polynomial_mutation</span></code></p></td>
-<td><p>[0]</p></td>
 </tr>
 </tbody>
 </table>
@@ -456,7 +450,7 @@ The genetic operator is an optional parameter of the algorithm, a default operat
 </div>
 <div class="section" id="offspring-generator">
 <h2>Offspring Generator<a class="headerlink" href="#offspring-generator" title="Permalink to this headline">¶</a></h2>
-<p>The offspring generator is set in the algorithm contructor with the parameter ‘offspring_generator’.</p>
+<p>The offspring generator is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">offspring_generator</span></code>.</p>
 <p>The offspring generator is the component that manage all the process to generate new offspring by
 using components ‘Parent Selector’ and ‘Genetic operator’. By default, this component is fixed because
 it is generic for almost all variants of MOEA/D when we need to generate one offspring. This component can be updated
@@ -486,7 +480,7 @@ and sent in parameter of the MOEAD class if you want to use new components such 
 </div>
 <div class="section" id="termination-criteria">
 <h2>Termination criteria<a class="headerlink" href="#termination-criteria" title="Permalink to this headline">¶</a></h2>
-<p>The termination criteria is set in the algorithm contructor with the parameter ‘termination_criteria’.</p>
+<p>The termination criteria is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">termination_criteria</span></code>.</p>
 <p>The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
 a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
 The termination criteria is an optional parameter of the algorithm.</p>
@@ -509,7 +503,7 @@ The termination criteria is an optional parameter of the algorithm.</p>
 </div>
 <div class="section" id="sps-sub-problem-selection-strategy">
 <h2>SPS (Sub-Problem Selection) Strategy<a class="headerlink" href="#sps-sub-problem-selection-strategy" title="Permalink to this headline">¶</a></h2>
-<p>The sps strategy is set in the algorithm contructor with the parameter ‘sps_strategy’.</p>
+<p>The sps strategy is set in the algorithm contructor with the parameter <code class="code docutils literal notranslate"><span class="pre">sps_strategy</span></code>.</p>
 <p>The SPS Strategy is the component used to select sub-problems (or solutions of the population) that will be visited during the next
 generation of MOEA/D. The default SPS is the strategy of the classic MOEA/D where all
 sub-problems are visited during one generation.</p>
@@ -549,7 +543,7 @@ sub-problems are visited during one generation.</p>
         <a href="tuto.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral float-left" title="Install the MOEA/D Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
