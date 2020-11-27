@@ -7,11 +7,12 @@ Problems
 --------------------------------------
 
 ========================================= ======================================================= ===================================================================
-Common Name                               Name in the framework                                   Comments
+Common Name                               Name in the framework                                   Parameters
 ========================================= ======================================================= ===================================================================
-rho MNK-Landscapes                        :class:`moead_framework.problem.combinatorial.rmnk`     The problem needs an instance file in parameter
-Multi-objective Knapsack                  :class:`moead_framework.problem.combinatorial.knapsack` The problem needs an instance file in parameter
-Zdt1                                      :class:`moead_framework.problem.numerical.zdt`          The problem needs the number of variables in parameter
+rho MNK-Landscapes                        :class:`moead_framework.problem.combinatorial.rmnk`     :code:`instance_file` : path of the instance file
+MUBQP                                     :class:`moead_framework.problem.combinatorial.mubqp`    :code:`instance_file` : path of the instance file
+Multi-objective Knapsack                  :class:`moead_framework.problem.combinatorial.knapsack` :code:`objective_number` : number of objective, :code:`instance_file` : path of the instance file
+Zdt1                                      :class:`moead_framework.problem.numerical.zdt`          :code:`size` : size of solutions
 ========================================= ======================================================= ===================================================================
  
 Three benchmark problems are available in the framework. You can find file instances for combinatorial problems
