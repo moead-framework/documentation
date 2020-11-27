@@ -14,6 +14,7 @@ Welcome to Moead-Framework's documentation!
    documentation
    tuto
    examples
+   references
 
 
 **MOEA/D** (*Multi-objective evolutionary algorithm based on decomposition*) 
