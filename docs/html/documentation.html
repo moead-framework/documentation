@@ -269,7 +269,7 @@ parameter <code class="code docutils literal notranslate"><span class="pre">eval
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.combinatorial.moead</span></code></p></td>
 <td><p>The original algorithm for combinatorial optimization</p></td>
 </tr>
-<tr class="row-odd"><td><p>Original MOEA/D (continue/numerical)</p></td>
+<tr class="row-odd"><td><p>Original MOEA/D (numerical)</p></td>
 <td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">moead_framework.algorithm.numerical.moead</span></code></p></td>
 <td><p>The original algorithm for numerical optimization</p></td>
 </tr>
@@ -340,9 +340,9 @@ is a required parameter of the algorithm. It is represented in the framework by 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param solution:</span>
 <span class="sd">        :param number_of_objective:</span>
-<span class="sd">        :param weights:</span>
-<span class="sd">        :param sub_problem:</span>
-<span class="sd">        :param z:</span>
+<span class="sd">        :param weights: array of weight vectors</span>
+<span class="sd">        :param sub_problem: index of the sub-problem currently visited</span>
+<span class="sd">        :param z: array of dimension &#39;number_of_objective&#39;, it is the reference point Z*</span>
 <span class="sd">        :return: the aggregation value of the solution for the weight weights[sub-problem]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>

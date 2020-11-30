@@ -65,7 +65,7 @@ Algorithms
 Common Name                               Name in the framework                                              Comments
 ========================================= ================================================================== ===================================================================
 Original MOEA/D (combinatorial)           :class:`moead_framework.algorithm.combinatorial.moead`             The original algorithm for combinatorial optimization
-Original MOEA/D (continue/numerical)      :class:`moead_framework.algorithm.numerical.moead`                 The original algorithm for numerical optimization
+Original MOEA/D (numerical)               :class:`moead_framework.algorithm.numerical.moead`                 The original algorithm for numerical optimization
 MOEA/D with delta and nr                  :class:`moead_framework.algorithm.combinatorial.moead_delta_nr`    Variant with parameters delta & nr of MOEA/D-DE
 MOEA/D-DRA                                :class:`moead_framework.algorithm.combinatorial.moead_dra`         Variant with a dynamic ressource allocation
 ========================================= ================================================================== ===================================================================
@@ -121,9 +121,9 @@ is a required parameter of the algorithm. It is represented in the framework by 
             """
             :param solution:
             :param number_of_objective:
-            :param weights:
-            :param sub_problem:
-            :param z:
+            :param weights: array of weight vectors
+            :param sub_problem: index of the sub-problem currently visited
+            :param z: array of dimension 'number_of_objective', it is the reference point Z*
             :return: the aggregation value of the solution for the weight weights[sub-problem]
             """
             pass
