@@ -76,6 +76,7 @@ Example for :class:`moead_framework.algorithm.combinatorial.moead` :
               # Optional parameters
               termination_criteria=MaxEvaluation,
               number_of_crossover_points=2,
+              mutation_probability=1,
               mating_pool_selector=ClosestNeighborsSelector,
               genetic_operator=CrossoverAndMutation,
               parent_selector=TwoRandomParentSelector,

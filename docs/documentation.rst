@@ -183,14 +183,17 @@ A genetic operator is a component used in genetics algorithms to generate offspr
 using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
 The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.
 
-========================================= ============================================================================================= 
-Common Name                               Name in the framework                                                                         
-========================================= ============================================================================================= 
-Multi-point combinatorial crossover       :class:`moead_framework.core.genetic_operator.combinatorial.crossover`                        
-Binary mutation                           :class:`moead_framework.core.genetic_operator.combinatorial.mutation`                         
-Differential Evolution Crossover          :class:`moead_framework.core.genetic_operator.numerical.differential_evolution_crossover`     
-Polynomial mutation                       :class:`moead_framework.core.genetic_operator.numerical.polynomial_mutation`                  
-========================================= ============================================================================================= 
+.. note:: If you call the genetic operator manually, pay attention to the potential additional parameters available in the table below, otherwise algorithms manage them automatically.
+
+
+========================================= ============================================================================================= ======================================================================================
+Common Name                               Name in the framework                                                                         additional parameters in the constructor
+========================================= ============================================================================================= ======================================================================================
+Multi-point combinatorial crossover       :class:`moead_framework.core.genetic_operator.combinatorial.crossover`                        :code:`crossover_points` : number of crossover points
+Binary mutation                           :class:`moead_framework.core.genetic_operator.combinatorial.mutation`                         :code:`mutation_probability` : the mutation rate is :code:`mutation_probability / n`
+Differential Evolution Crossover          :class:`moead_framework.core.genetic_operator.numerical.differential_evolution_crossover`     /
+Polynomial mutation                       :class:`moead_framework.core.genetic_operator.numerical.polynomial_mutation`                  /
+========================================= ============================================================================================= ======================================================================================
 
 It is represented in the framework by a class with two methods : 
 
@@ -199,12 +202,11 @@ It is represented in the framework by a class with two methods :
     class GeneticOperator:
 
         @abstractmethod
-        def __init__(self, solutions, crossover_points=1):        
+        def __init__(self, solutions, **kwargs):        
         """
         take in parameter parent solutions required by the operator
         """
             self.solutions = solutions
-            self.crossover_points = crossover_points
         
 
         @abstractmethod
@@ -242,8 +244,14 @@ and sent in parameter of the MOEAD class if you want to use new components such 
             else:
                 crossover_point = None
 
+            if hasattr(self.algorithm, 'mutation_probability'):
+                mutation_probability = self.algorithm.mutation_probability
+            else:
+                mutation_probability = None
+
             y_sol = self.algorithm.genetic_operator(solutions=parents_solutions,
-                                                    crossover_points=crossover_point
+                                                    crossover_points=crossover_point,
+                                                    mutation_probability=mutation_probability
                                                     ).run()
 
             return self.algorithm.problem.generate_solution(array=y_sol)
