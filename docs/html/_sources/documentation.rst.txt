@@ -15,7 +15,7 @@ Multi-objective Knapsack :cite:`mokp`     :class:`moead_framework.problem.combin
 Zdt1 :cite:`zdt`                           :class:`moead_framework.problem.numerical.zdt`          :code:`size` : size of solutions
 ========================================= ======================================================= ===================================================================
  
-Three benchmark problems are available in the framework. You can find file instances for combinatorial problems
+Four benchmark problems are available in the framework. You can find file instances for combinatorial problems
 in this repository https://github.com/moead-framework/data/tree/master/problem. 
 
 .. note:: You can implement your own problem by following :ref:`this tutoriel<tuto-problem>`.
