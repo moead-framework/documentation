@@ -12,7 +12,7 @@ and also implement the 3 required functions :
 - the fitness function :code:`f(function_id, solution)` has 2 required parameters. The function must returns the objectif value of the solution 
   for the objective function_id in parameter.
 
-  .. note:: For a better compatibility between our components, problems should be converted in minimization problems.
+  .. note:: For a better compatibility with components, problems should be converted in minimization problems.
 
 .. code-block:: python
     
@@ -89,7 +89,7 @@ Example for :class:`moead_framework.algorithm.combinatorial.moead` :
 If you want manage the way to use all this :ref:`components<components>`, you have to create 
 a new algorithm by extending an available algorithm. Examples are available in this repository : https://github.com/moead-framework/framework/tree/master/moead_framework/algorithm.
 
-For example with the implementation of MOEA/D-DE (https://ieeexplore.ieee.org/document/4633340) in the class :class:`moead_framework.algorithm.combinatorial.moead_delta_nr` that extends **Moead** to rewrite the 
+For example with the implementation of MOEA/D-DE :cite:`moead_de` in the class :class:`moead_framework.algorithm.combinatorial.moead_delta_nr` that extends **Moead** to rewrite the 
 function update_solutions() and add two new parameters. 
 
 

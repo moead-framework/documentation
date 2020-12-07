@@ -9,10 +9,10 @@ Problems
 ========================================= ======================================================= ===================================================================
 Common Name                               Name in the framework                                   Parameters
 ========================================= ======================================================= ===================================================================
-rho MNK-Landscapes                        :class:`moead_framework.problem.combinatorial.rmnk`     :code:`instance_file` : path of the instance file
-MUBQP                                     :class:`moead_framework.problem.combinatorial.mubqp`    :code:`instance_file` : path of the instance file
-Multi-objective Knapsack                  :class:`moead_framework.problem.combinatorial.knapsack` :code:`objective_number` : number of objective, :code:`instance_file` : path of the instance file
-Zdt1                                      :class:`moead_framework.problem.numerical.zdt`          :code:`size` : size of solutions
+rho MNK-Landscapes :cite:`rmnk`           :class:`moead_framework.problem.combinatorial.rmnk`     :code:`instance_file` : path of the instance file
+MUBQP :cite:`mubqp`                       :class:`moead_framework.problem.combinatorial.mubqp`    :code:`instance_file` : path of the instance file
+Multi-objective Knapsack :cite:`mokp`     :class:`moead_framework.problem.combinatorial.knapsack` :code:`objective_number` : number of objective, :code:`instance_file` : path of the instance file
+Zdt1 :cite:`zdt`                           :class:`moead_framework.problem.numerical.zdt`          :code:`size` : size of solutions
 ========================================= ======================================================= ===================================================================
  
 Three benchmark problems are available in the framework. You can find file instances for combinatorial problems
@@ -22,16 +22,16 @@ in this repository https://github.com/moead-framework/data/tree/master/problem.
 
 Three functions are available in a problem object: 
 
-=================================================== ===================================================================
-Function                                            Comments
-=================================================== ===================================================================
-problem.generate_random_solution(evaluate)          Generate a random solution. The parameter `evaluate` is a boolean to specify if the solution have to be evaluated. The default value is True.
-problem.generate_solution(x, evaluate)              Convert the list `x` to a Solution object. The parameter `evaluate` is a boolean to specify if the solution have to be evaluated. The default value is True.
-problem.f(i, solution)                              Return the fitness value of the function `i`.
-=================================================== ===================================================================
+============================================================ ===================================================================
+Function                                                     Comments
+============================================================ ===================================================================
+:class:`problem.generate_random_solution(evaluate)`          Generate a random solution. The parameter :code:`evaluate` is a boolean to specify if the solution have to be evaluated. The default value is :code:`True`.
+:class:`problem.generate_solution(x, evaluate)`              Convert the list :code:`x` to a Solution object. The parameter :code:`evaluate` is a boolean to specify if the solution have to be evaluated. The default value is :code:`True`.
+:class:`problem.f(i, solution)`                              Return the fitness value of the :code:`solution` object for the function :code:`i`.
+============================================================ ===================================================================
 
 A solution is a :code:`OneDimensionSolution` object. This object save the array in the attribute 
-:code:`OneDimensionSolution.solution`, the fitness is save in the array  :code:`OneDimensionSolution.F` if the  
+:code:`OneDimensionSolution.solution`, the fitness is saved in the array  :code:`OneDimensionSolution.F` if the  
 parameter :code:`evaluate` is set to True.
 
 Example with the problem rho MNK-Landscapes:
@@ -61,16 +61,16 @@ Example with the problem rho MNK-Landscapes:
 Algorithms
 --------------------------------------
 
-========================================= ================================================================== ===================================================================
-Common Name                               Name in the framework                                              Comments
-========================================= ================================================================== ===================================================================
-Original MOEA/D (combinatorial)           :class:`moead_framework.algorithm.combinatorial.moead`             The original algorithm for combinatorial optimization
-Original MOEA/D (numerical)               :class:`moead_framework.algorithm.numerical.moead`                 The original algorithm for numerical optimization
-MOEA/D with delta and nr                  :class:`moead_framework.algorithm.combinatorial.moead_delta_nr`    Variant with parameters delta & nr of MOEA/D-DE
-MOEA/D-DRA                                :class:`moead_framework.algorithm.combinatorial.moead_dra`         Variant with a dynamic ressource allocation
-========================================= ================================================================== ===================================================================
+====================================================== ================================================================== ===================================================================
+Common Name                                             Name in the framework                                              Comments
+====================================================== ================================================================== ===================================================================
+Original MOEA/D (combinatorial) :cite:`moead`           :class:`moead_framework.algorithm.combinatorial.moead`             The original algorithm for combinatorial optimization
+Original MOEA/D (numerical) :cite:`moead`               :class:`moead_framework.algorithm.numerical.moead`                 The original algorithm for numerical optimization
+MOEA/D with parameters delta / nr :cite:`moead_de`      :class:`moead_framework.algorithm.combinatorial.moead_delta_nr`    Variant with parameters delta & nr of MOEA/D-DE
+MOEA/D-DRA :cite:`moead_dra`                            :class:`moead_framework.algorithm.combinatorial.moead_dra`         Variant with a dynamic ressource allocation
+====================================================== ================================================================== ===================================================================
 
-Each algorithm can be executed with the :code:`run()` function. This function return all non dominated solutions found by the 
+Each algorithm can be executed with the :code:`run()` function. This function returns all non dominated solutions found by the 
 algorithm. Example : 
 
 .. code-block:: python
@@ -92,14 +92,14 @@ algorithm. Example :
 Weight vectors 
 --------------------------------------
 For the decomposition of the multi-objective problems, we need weight vectors. 
-These weights are set by using a text file in the algorithm contructor with the parameter :code:`weight_file` and the parameter :code:`number_of_weight`.
-We propose weight files in this repository : https://github.com/moead-framework/data/tree/master/weights.
+These weights are initialized by using a text file in the algorithm contructor with the parameter :code:`weight_file` and the parameter :code:`number_of_weight`.
+We propose some examples of weight files in this repository : https://github.com/moead-framework/data/tree/master/weights.
 
 
 Aggregation function
 --------------------------------------
 
-The aggregation function is set in the algorithm contructor with the parameter :code:`aggregation_function`.
+The aggregation function is set as the parameter :code:`aggregation_function` in the algorithm contructor.
 
 ========================================= ========================================= 
 Common Name                               Name in the framework                    
@@ -108,7 +108,7 @@ Weighted Sum                              :class:`moead_framework.aggregation.we
 Tchebycheff                               :class:`moead_framework.aggregation.tchebycheff`    
 ========================================= ========================================= 
 
-The aggregation function is used in MOEA/D to decompose the multi-objective problem into several mono-objective problems. 
+The aggregation function is used in MOEA/D to decompose the multi-objective problem into several mono-objective sub-problems. 
 The two main functions used are the Weighted Sum and the Tchebycheff function. In our framework, the aggregation function
 is a required parameter of the algorithm. It is represented in the framework by a class with two methods : 
 
@@ -142,11 +142,11 @@ is a required parameter of the algorithm. It is represented in the framework by 
 Parent Selector
 --------------------------------------
 
-The parent selector is set in the algorithm contructor with the parameter :code:`parent_selector`.
+The parent selector is set as the parameter :code:`parent_selector` in the algorithm contructor.
 
 The parent selector is the component used to select solutions in the neighborhood before to use genetic 
 operators to generate new offspring. The parent selector is an optional 
-parameter of the algorithm, a default operator is used if the parameter is not set.
+parameter of the algorithm, a default operator is used if the parameter is not set (two random solutions).
 
 ========================================= ========================================= 
 Common Name                               Name in the framework                    
@@ -157,8 +157,8 @@ Two random and current solution           :class:`moead_framework.core.parent_se
 ========================================= ========================================= 
 
 The parent selector is executed with the function select, this function takes in parameter a set of index that represents
-solutions in the population, and more precisely, in the neighborhood. The select function will return solutions that will 
-be used to generate new offspring thanks to the genetic operator.
+solutions in the population, and more precisely, in the neighborhood. The select function returns solutions that will 
+be used to generate new offspring with the genetic operator.
 
 
 .. code-block:: python
@@ -177,11 +177,11 @@ be used to generate new offspring thanks to the genetic operator.
 Genetic operator
 --------------------------------------
 
-The genetic operator is set in the algorithm contructor with the parameter :code:`genetic_operator`.
+The genetic operator is set as the parameter :code:`genetic_operator` in the algorithm contructor.
 
-A genetic operator is a component used in genetics algorithms to generate offspring by 
-using characteristics of parents solutions. In the framework, these operators are used in the component offspring_generator.
-The genetic operator is an optional parameter of the algorithm, a default operator is used if the parameter is not set.
+A genetic operator is a component used in genetic algorithms to generate offspring by 
+using characteristics of parents solutions. In the framework, these operators are used in the component **offspring_generator**.
+The genetic operator is an optional parameter of the algorithm, a default operator (crossover) is used if the parameter is not set.
 
 .. note:: If you call the genetic operator manually, pay attention to the potential additional parameters available in the table below, otherwise algorithms manage them automatically.
 
@@ -204,7 +204,7 @@ It is represented in the framework by a class with two methods :
         @abstractmethod
         def __init__(self, solutions, **kwargs):        
         """
-        take in parameter parent solutions required by the operator
+        take in parameter parent solutions required by the operator and potential additional parameters
         """
             self.solutions = solutions
         
@@ -220,12 +220,12 @@ It is represented in the framework by a class with two methods :
 Offspring Generator
 --------------------------------------
 
-The offspring generator is set in the algorithm contructor with the parameter :code:`offspring_generator`.
+The offspring generator is set as the parameter :code:`offspring_generator` in the algorithm contructor.
 
 The offspring generator is the component that manage all the process to generate new offspring by 
-using components 'Parent Selector' and 'Genetic operator'. By default, this component is fixed because 
-it is generic for almost all variants of MOEA/D when we need to generate one offspring. This component can be updated 
-and sent in parameter of the MOEAD class if you want to use new components such as surrogates models for example.
+using components **Parent Selector** and **Genetic operator**. By default, this component is fixed because 
+it is generic for almost all MOEA/D variants when we need to generate one offspring. This component can be updated 
+in parameter of the MOEAD class if you want to use new components to generate offspring such as surrogates models for example.
 
 .. code-block:: python
 
@@ -261,9 +261,9 @@ and sent in parameter of the MOEAD class if you want to use new components such 
 Termination criteria
 --------------------------------------
 
-The termination criteria is set in the algorithm contructor with the parameter :code:`termination_criteria`.
+The termination criteria is set as the parameter :code:`termination_criteria` in the algorithm contructor.
 
-The termination criteria is the component used to determine when the algorithm have to stop. We implement in this framework
+The termination criteria is the component used to determine when the algorithm ends. We implement in this framework
 a default criteria based on a maximum number of evaluation (a parameter of the algorithm) but we allow you to define new critera.
 The termination criteria is an optional parameter of the algorithm.
 
@@ -277,9 +277,9 @@ Maximum number of evaluation              :class:`moead_framework.core.terminati
 SPS (Sub-Problem Selection) Strategy
 --------------------------------------
 
-The sps strategy is set in the algorithm contructor with the parameter :code:`sps_strategy`.
+The sps strategy is set as the parameter :code:`sps_strategy` in the algorithm contructor.
 
-The SPS Strategy is the component used to select sub-problems (or solutions of the population) that will be visited during the next 
+The SPS Strategy :cite:`gpruvost_evocop2020` is the component used to select sub-problems (or solutions of the population) that will be visited during the next 
 generation of MOEA/D. The default SPS is the strategy of the classic MOEA/D where all
 sub-problems are visited during one generation.
 
