@@ -5,7 +5,7 @@ from moead_framework.tool.result import save_population
 
 
 ###############################
-#      Init the problem       #
+#    Initialize the problem   #
 ###############################
 # The file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_100_1_0.dat
 # Others instances are available here : https://github.com/moead-framework/data/tree/master/problem/RMNK/Instances
@@ -14,7 +14,7 @@ rmnk = Rmnk(instance_file=instance_file)
 
 
 ###############################
-#      Init the algorithm     #
+#  Initialize the algorithm   #
 ###############################
 number_of_objective = rmnk.function_numbers
 number_of_weight = 10

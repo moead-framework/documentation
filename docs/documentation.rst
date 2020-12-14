@@ -40,7 +40,7 @@ Example with the problem rho MNK-Landscapes:
 
     In [1]: from moead_framework.problem.combinatorial.rmnk import Rmnk
 
-    # the file is available here : https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat
+    # the file is available here: https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat
     # rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0
     In [2]: file_rmnk = "rmnk_0_2_20_1_0.dat"  
     In [3]: problem = Rmnk(instance_file=file_rmnk) 
@@ -71,7 +71,7 @@ MOEA/D-DRA :cite:`moead_dra`                            :class:`moead_framework.
 ====================================================== ================================================================== ===================================================================
 
 Each algorithm can be executed with the :code:`run()` function. This function returns all non dominated solutions found by the 
-algorithm. Example : 
+algorithm. Example: 
 
 .. code-block:: python
     
@@ -93,7 +93,7 @@ Weight vectors
 --------------------------------------
 For the decomposition of the multi-objective problems, we need weight vectors. 
 These weights are initialized by using a text file in the algorithm contructor with the parameter :code:`weight_file` and the parameter :code:`number_of_weight`.
-We propose some examples of weight files in this repository : https://github.com/moead-framework/data/tree/master/weights.
+We propose some examples of weight files in this repository: https://github.com/moead-framework/data/tree/master/weights.
 
 
 Aggregation function
@@ -195,7 +195,7 @@ Differential Evolution Crossover          :class:`moead_framework.core.genetic_o
 Polynomial mutation                       :class:`moead_framework.core.genetic_operator.numerical.polynomial_mutation`                  /
 ========================================= ============================================================================================= ======================================================================================
 
-It is represented in the framework by a class with two methods : 
+It is represented in the framework by a class with two methods: 
 
 .. code-block:: python
 

@@ -7,7 +7,7 @@ We recommend using the latest version of Python 3.
 
 Installing via pip
 -------------------------------------- 
-The package is available in pypi, you can install it with : 
+The package is available in pypi, you can install it with: 
 ::
     pip install moead-framework 
 
@@ -21,6 +21,6 @@ The latest release of the framework is available on github:
 
 Run tests
 --------------------------------------
-You can execute unit test with : 
+You can execute unit test with: 
 ::
     python3 -m unittest 
