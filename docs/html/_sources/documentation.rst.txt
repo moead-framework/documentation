@@ -38,7 +38,7 @@ Example with the problem rho MNK-Landscapes:
 
 .. code-block:: python
 
-    In [1]: from moead_framework.problem.combinatorial.rmnk import Rmnk
+    In [1]: from moead_framework.problem.combinatorial import Rmnk
 
     # the file is available here: https://github.com/moead-framework/data/blob/master/problem/RMNK/Instances/rmnk_0_2_20_1_0.dat
     # rmnk instance with parameters rho=0, m=2, n=20, k=1 and a seed of 0
