@@ -3,7 +3,8 @@ Installation
 ===========================================
 
 The framework is available open-source under the GPL v3 license. 
-We recommend using the latest version of Python 3.
+
+The package is available with a linux environment for python 3.6, 3.7, 3.8 and 3.9.
 
 Installing via pip
 -------------------------------------- 
